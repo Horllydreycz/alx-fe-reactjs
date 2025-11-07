@@ -13,8 +13,14 @@ function App() {
       <WelcomeMessage />
       <MainContent />
       <Footer />
-      <UserContext.Provider>
-        <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
+      <UserContext.Provider
+        value={{
+          name: "Alice",
+          age: "25",
+          bio: "Loves hiking and photography",
+        }}
+      >
+        <UserProfile />
       </UserContext.Provider>
     </>
   );
