@@ -3,8 +3,18 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav>
-      <ul>
+    <nav
+      style={{
+        backgroundColor: "#333",
+      }}
+    >
+      <ul
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "2em",
+        }}
+      >
         <li>
           <Link to="/">Home</Link>
         </li>
