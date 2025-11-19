@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useRecipeStore } from "./recipeStore";
 
-const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
+const EditRecipeForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const recipeId = parseInt(id);
+
+  const recipe = useRecipeStore((state) =>
+    state.recipes.find((recipe) => recipe.id === recipeId)
+  );
+  const updateRecipe = useRecipeStore((state) => state.updateRecipe);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -10,24 +18,47 @@ const AddRecipeForm = () => {
   const [steps, setSteps] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (recipe) {
+      setTitle(recipe.title);
+      setDescription(recipe.description);
+      setIngredients(recipe.ingredients?.join("\n") || "");
+      setSteps(recipe.steps?.join("\n") || "");
+    }
+  }, [recipe]);
 
-    // Validation: Check if title is empty
+  if (!recipe) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Recipe Not Found
+          </h2>
+          <button
+            onClick={() => navigate("/")}
+            className="text-blue-500 hover:underline"
+          >
+            ← Back to Recipes
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validation
     if (!title.trim()) {
       setError("Recipe title is required!");
       return;
     }
-
-    // Validation: Check if description is empty
     if (!description.trim()) {
       setError("Recipe description is required!");
       return;
     }
 
-    // Create recipe object
-    const newRecipe = {
-      id: Date.now(),
+    const updatedRecipe = {
       title: title.trim(),
       description: description.trim(),
       ingredients: ingredients
@@ -40,20 +71,20 @@ const AddRecipeForm = () => {
         .filter((s) => s),
     };
 
-    // Add recipe to store
-    addRecipe(newRecipe);
-
-    // Clear error and reset form
-    setError("");
-    setTitle("");
-    setDescription("");
-    setIngredients("");
-    setSteps("");
+    updateRecipe(recipeId, updatedRecipe);
+    navigate(`/recipe/${recipeId}`);
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Add New Recipe</h1>
+      <button
+        onClick={() => navigate(`/recipe/${recipeId}`)}
+        className="text-blue-500 hover:underline mb-4 inline-block"
+      >
+        ← Back to Recipe
+      </button>
+
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Recipe</h1>
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -70,8 +101,8 @@ const AddRecipeForm = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g., Chocolate Chip Cookies"
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g., Chocolate Chip Cookies"
           />
         </div>
 
@@ -82,9 +113,9 @@ const AddRecipeForm = () => {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Brief description of your recipe"
             rows="3"
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Brief description of your recipe"
           />
         </div>
 
@@ -95,9 +126,9 @@ const AddRecipeForm = () => {
           <textarea
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
-            placeholder="2 cups flour&#10;1 cup sugar&#10;3 eggs"
             rows="6"
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="2 cups flour&#10;1 cup sugar&#10;3 eggs"
           />
         </div>
 
@@ -108,21 +139,30 @@ const AddRecipeForm = () => {
           <textarea
             value={steps}
             onChange={(e) => setSteps(e.target.value)}
-            placeholder="Preheat oven to 350°F&#10;Mix dry ingredients&#10;Add wet ingredients"
             rows="6"
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Preheat oven to 350°F&#10;Mix dry ingredients&#10;Add wet ingredients"
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold w-full"
-        >
-          Add Recipe
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold"
+          >
+            Update Recipe
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(`/recipe/${recipeId}`)}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded-md font-semibold"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default AddRecipeForm;
+export default EditRecipeForm;
