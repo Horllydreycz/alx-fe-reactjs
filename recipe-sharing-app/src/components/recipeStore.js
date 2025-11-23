@@ -2,6 +2,8 @@ import create from "zustand";
 
 const useRecipeStore = create((set) => ({
   recipes: [],
+  searchTerm: "",
+  filteredRecipes: [],
 
   // Add a new recipe
   addRecipe: (newRecipe) =>
@@ -26,17 +28,29 @@ const useRecipeStore = create((set) => ({
   // Set all recipes (useful for initial load or reset)
   setRecipes: (recipes) => set({ recipes }),
 
-  // Search/filter recipes
-  searchRecipes: (searchTerm) =>
+  // Set search term
+  setSearchTerm: (term) => set({ searchTerm: term }),
+
+  // Filter recipes based on search term
+  filterRecipes: () =>
     set((state) => ({
       filteredRecipes: state.recipes.filter(
         (recipe) =>
-          recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          recipe.description?.toLowerCase().includes(searchTerm.toLowerCase())
+          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
+          (recipe.description &&
+            recipe.description
+              .toLowerCase()
+              .includes(state.searchTerm.toLowerCase())) ||
+          (recipe.ingredients &&
+            (Array.isArray(recipe.ingredients)
+              ? recipe.ingredients.some((ing) =>
+                  ing.toLowerCase().includes(state.searchTerm.toLowerCase())
+                )
+              : recipe.ingredients
+                  .toLowerCase()
+                  .includes(state.searchTerm.toLowerCase())))
       ),
     })),
-
-  filteredRecipes: [],
 
   // Favorites functionality
   favorites: [],
