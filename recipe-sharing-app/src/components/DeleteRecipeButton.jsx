@@ -1,43 +1,41 @@
-// src/components/DeleteRecipeButton.jsx
-import { useState } from "react";
-import { useRecipeStore } from "../store/recipeStore";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import useRecipeStore from "./recipeStore";
 
-const DeleteRecipeButton = ({ recipeId, onDelete }) => {
-  const [showConfirm, setShowConfirm] = useState(false);
+const DeleteRecipeButton = ({ recipeId }) => {
+  const navigate = useNavigate();
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
 
   const handleDelete = () => {
-    deleteRecipe(recipeId);
-    if (onDelete) {
-      onDelete();
+    // Confirm before deleting
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this recipe? This action cannot be undone."
+    );
+
+    if (confirmDelete) {
+      // Delete the recipe from the store
+      deleteRecipe(recipeId);
+
+      // Navigate back to the recipes list or home page
+      navigate("/");
     }
   };
 
-  if (showConfirm) {
-    return (
-      <div className="flex gap-2">
-        <button
-          onClick={handleDelete}
-          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm"
-        >
-          Confirm Delete
-        </button>
-        <button
-          onClick={() => setShowConfirm(false)}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md text-sm"
-        >
-          Cancel
-        </button>
-      </div>
-    );
-  }
-
   return (
     <button
-      onClick={() => setShowConfirm(true)}
-      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+      onClick={handleDelete}
+      className="delete-recipe-button"
+      style={{
+        backgroundColor: "#dc3545",
+        color: "white",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        fontSize: "14px",
+      }}
     >
-      Delete
+      Delete Recipe
     </button>
   );
 };
