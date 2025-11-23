@@ -1,128 +1,221 @@
-import { useState } from "react";
-import { useRecipeStore } from "./recipeStore";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useRecipeStore from "./recipeStore";
 
 const AddRecipeForm = () => {
+  const navigate = useNavigate();
   const addRecipe = useRecipeStore((state) => state.addRecipe);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState("");
-  const [error, setError] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [prepTime, setPrepTime] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Validation: Check if title is empty
+    // Validate form
     if (!title.trim()) {
-      setError("Recipe title is required!");
+      alert("Please enter a recipe title");
       return;
     }
 
-    // Validation: Check if description is empty
-    if (!description.trim()) {
-      setError("Recipe description is required!");
-      return;
-    }
-
-    // Create recipe object
+    // Create new recipe object
     const newRecipe = {
-      id: Date.now(),
+      id: Date.now(), // Simple ID generation
       title: title.trim(),
       description: description.trim(),
       ingredients: ingredients
-        .split("\n")
-        .map((i) => i.trim())
-        .filter((i) => i),
-      steps: steps
-        .split("\n")
-        .map((s) => s.trim())
-        .filter((s) => s),
+        .split(",")
+        .map((ing) => ing.trim())
+        .filter(Boolean),
+      instructions: instructions.trim(),
+      prepTime: prepTime.trim(),
     };
 
     // Add recipe to store
     addRecipe(newRecipe);
 
-    // Clear error and reset form
-    setError("");
-    setTitle("");
-    setDescription("");
-    setIngredients("");
-    setSteps("");
+    // Navigate to the new recipe's detail page
+    navigate(`/recipe/${newRecipe.id}`);
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Add New Recipe</h1>
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">
+    <div style={styles.container}>
+      <h1 style={styles.title}>Add New Recipe</h1>
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <div style={styles.formGroup}>
+          <label htmlFor="title" style={styles.label}>
             Recipe Title *
           </label>
           <input
             type="text"
+            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g., Chocolate Chip Cookies"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g., Grandma's Apple Pie"
+            required
+            style={styles.input}
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">
-            Description *
+        <div style={styles.formGroup}>
+          <label htmlFor="description" style={styles.label}>
+            Description
           </label>
           <textarea
+            id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Brief description of your recipe"
             rows="3"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={styles.textarea}
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">
-            Ingredients (one per line)
+        <div style={styles.formGroup}>
+          <label htmlFor="prepTime" style={styles.label}>
+            Preparation Time
+          </label>
+          <input
+            type="text"
+            id="prepTime"
+            value={prepTime}
+            onChange={(e) => setPrepTime(e.target.value)}
+            placeholder="e.g., 30 minutes"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label htmlFor="ingredients" style={styles.label}>
+            Ingredients (comma-separated) *
           </label>
           <textarea
+            id="ingredients"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
-            placeholder="2 cups flour&#10;1 cup sugar&#10;3 eggs"
-            rows="6"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g., 2 cups flour, 1 egg, 1 cup milk, 2 tbsp sugar"
+            rows="5"
+            style={styles.textarea}
           />
+          <small style={styles.hint}>
+            Separate each ingredient with a comma
+          </small>
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">
-            Instructions (one step per line)
+        <div style={styles.formGroup}>
+          <label htmlFor="instructions" style={styles.label}>
+            Instructions *
           </label>
           <textarea
-            value={steps}
-            onChange={(e) => setSteps(e.target.value)}
-            placeholder="Preheat oven to 350°F&#10;Mix dry ingredients&#10;Add wet ingredients"
-            rows="6"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            id="instructions"
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
+            placeholder="Step-by-step cooking instructions"
+            rows="8"
+            style={styles.textarea}
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold w-full"
-        >
-          Add Recipe
-        </button>
+        <div style={styles.actions}>
+          <button type="submit" style={styles.submitButton}>
+            ✅ Add Recipe
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            style={styles.cancelButton}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    maxWidth: "800px",
+    margin: "0 auto",
+    padding: "20px",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  },
+  title: {
+    fontSize: "32px",
+    marginBottom: "30px",
+    color: "#333",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+  formGroup: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  label: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    marginBottom: "8px",
+    color: "#333",
+  },
+  input: {
+    padding: "12px",
+    fontSize: "16px",
+    border: "2px solid #ddd",
+    borderRadius: "4px",
+    outline: "none",
+    transition: "border-color 0.3s",
+  },
+  textarea: {
+    padding: "12px",
+    fontSize: "16px",
+    border: "2px solid #ddd",
+    borderRadius: "4px",
+    outline: "none",
+    resize: "vertical",
+    fontFamily: "inherit",
+    transition: "border-color 0.3s",
+  },
+  hint: {
+    fontSize: "13px",
+    color: "#666",
+    marginTop: "5px",
+    fontStyle: "italic",
+  },
+  actions: {
+    display: "flex",
+    gap: "15px",
+    marginTop: "20px",
+  },
+  submitButton: {
+    padding: "14px 30px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+  },
+  cancelButton: {
+    padding: "14px 30px",
+    backgroundColor: "#6c757d",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+  },
 };
 
 export default AddRecipeForm;
