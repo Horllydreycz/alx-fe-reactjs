@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const GITHUB_API_BASE_URL = "https://api.github.com";
+const GITHUB_API_BASE_URL = "https://api.github.com/search/users?q";
 const API_KEY = import.meta.env.VITE_APP_GITHUB_API_KEY;
 
 // Create axios instance with default config
