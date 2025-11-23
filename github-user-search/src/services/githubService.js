@@ -19,7 +19,7 @@ const githubAPI = axios.create({
  * @param {number} params.perPage - Results per page
  * @returns {Promise} - Search results
  */
-export const searchUsers = async ({
+export const fetchUserData = async ({
   username = "",
   location = "",
   minRepos = "",
