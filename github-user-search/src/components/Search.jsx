@@ -37,7 +37,7 @@ function Search() {
       setTotalCount(data.total_count);
       setCurrentPage(page);
     } catch {
-      setError("Failed to fetch users. Please try again.");
+      setError("Looks like we cant find the user");
       if (page === 1) {
         setUsers([]);
       }
