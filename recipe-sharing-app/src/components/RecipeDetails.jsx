@@ -15,13 +15,13 @@ const RecipeDetails = () => {
   const removeFavorite = useRecipeStore((state) => state.removeFavorite);
 
   const recipe = recipes.find((r) => r.id === parseInt(id));
-  const isFavorite = favorites.includes(parseInt(id));
+  const isFavorite = recipe ? favorites.includes(recipe.id) : false;
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      removeFavorite(parseInt(id));
+      removeFavorite(recipe.id);
     } else {
-      addFavorite(parseInt(id));
+      addFavorite(recipe.id);
     }
   };
 
@@ -40,7 +40,7 @@ const RecipeDetails = () => {
   if (isEditing) {
     return (
       <EditRecipeForm
-        recipeId={parseInt(id)}
+        recipeId={recipe.id}
         onClose={() => setIsEditing(false)}
       />
     );
@@ -117,7 +117,7 @@ const RecipeDetails = () => {
         >
           ✏️ Edit Recipe
         </button>
-        <DeleteRecipeButton recipeId={parseInt(id)} />
+        <DeleteRecipeButton recipeId={recipe.id} />
       </div>
     </div>
   );
