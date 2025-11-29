@@ -4,7 +4,7 @@ function UserProfile() {
       <img
         src="https://via.plac eholder.com/150"
         alt="User"
-        className="img rounded-full w-36 h-36 mx-auto sm:w-24 h-24 nd:w-36 h-36"
+        className="img rounded-full w-36 h-36 mx-auto sm:h-24 md:w-36 md:h-36"
       />
       <h1 className="head text-xl text-blue-800 my-4 sm:text-lg md:text-xl">
         John Doe
