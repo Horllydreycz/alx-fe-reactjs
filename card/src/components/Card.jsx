@@ -2,15 +2,24 @@ import React from "react";
 function Card() {
   return (
     <div>
-      <div class="grid justify-center rounded-sm border-1 white-500/100 g:text-xl lg:p-8">
+      <div className="container bg-white p-8 max-w-sm mx-auto my-50 shadow-xl rounded-3xl">
         <div>
-          <img src="src/images/Profile Image.png" alt="Profile Image" />
+          <img
+            src="src/images/Profile Image.png"
+            alt="Profile Image"
+            className="img w-36 h-36 mx-auto sm:h-24"
+          />
         </div>
-        <h1 class="font-sf">Sophie Bennett</h1>
-        <img
-          src="src/images/Verification Icon Container.png"
-          alt="Verification"
-        />
+        <h1 className="head text-xl text-shadow-black my-4">
+          Sophie Bennett{" "}
+          <span>
+            <img
+              src="src/images/Verification Icon Container.png"
+              alt="Verification"
+            />
+          </span>
+        </h1>
+
         <p>Product Designer who focuses on simplicity & usability. </p>
         <div class="flex">
           <img
