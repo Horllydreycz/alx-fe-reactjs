@@ -12,7 +12,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="container bg">
+    <div className="rounded-3xl">
       <h1 className="head text-3xl font-bold text-center mb-10 ">
         Recipe Sharing Platform
       </h1>
@@ -25,7 +25,7 @@ function HomePage() {
             <img
               src={recipe.image}
               alt={recipe.title}
-              className="w-full h-40 object-cover"
+              className="w-full h-40 object-cover rounded-full"
             />
             <div className="p-5">
               <h2 className="text-xl font-semibold">{recipe.title}</h2>
