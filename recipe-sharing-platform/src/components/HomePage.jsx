@@ -13,7 +13,7 @@ function HomePage() {
 
   return (
     <div className="rounded-3xl">
-      <h1 className="head text-3xl font-bold text-center mb-10 ">
+      <h1 className="text-3xl font-bold text-center mb-10 ">
         Recipe Sharing Platform
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -25,7 +25,7 @@ function HomePage() {
             <img
               src={recipe.image}
               alt={recipe.title}
-              className="w-full h-40 object-cover rounded-full"
+              className="w-full h-80 object-cover rounded-full"
             />
             <div className="p-5">
               <h2 className="text-xl font-semibold">{recipe.title}</h2>
