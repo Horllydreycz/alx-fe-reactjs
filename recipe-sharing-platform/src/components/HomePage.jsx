@@ -32,7 +32,7 @@ function HomePage() {
               <h2 className="text-xl font-semibold">{recipe.title}</h2>
               <p className="text-grey-600 mt-2">{recipe.summary}</p>
               <Link
-                href={`/recipe/${recipe.id}`}
+                to={`/recipe/${recipe.id}`}
                 className="inline-block mt-4 text-blue-600 font-medium hover:underline"
               >
                 View Details
