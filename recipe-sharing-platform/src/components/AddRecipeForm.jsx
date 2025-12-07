@@ -6,7 +6,6 @@ const AddRecipeForm = () => {
   const [steps, setSteps] = useState("");
   const [errors, setErrors] = useState({});
 
-  // ✅ validate function
   const validate = () => {
     const newErrors = {};
 
@@ -26,10 +25,8 @@ const AddRecipeForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!validate()) return;
 
     const newRecipe = {
@@ -41,7 +38,6 @@ const AddRecipeForm = () => {
 
     console.log("Submitted Recipe:", newRecipe);
 
-    // Clear form
     setTitle("");
     setIngredients("");
     setSteps("");
@@ -49,16 +45,18 @@ const AddRecipeForm = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-bold mb-6">Add a New Recipe</h2>
+    <div className="max-w-2xl mx-auto p-4 md:p-8 bg-white shadow rounded-lg">
+      <h2 className="text-2xl font-bold mb-6 text-center md:text-left">
+        Add a New Recipe
+      </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
         {/* Title */}
         <div>
           <label className="block mb-1 font-medium">Recipe Title</label>
           <input
             type="text"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 md:p-3 rounded"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -71,7 +69,7 @@ const AddRecipeForm = () => {
         <div>
           <label className="block mb-1 font-medium">Ingredients</label>
           <textarea
-            className="w-full border p-2 rounded h-28"
+            className="w-full border p-2 md:p-3 rounded h-28 md:h-32"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
           />
@@ -80,11 +78,11 @@ const AddRecipeForm = () => {
           )}
         </div>
 
-        {/* Steps */}
+        {/* Preparation Steps */}
         <div>
           <label className="block mb-1 font-medium">Preparation Steps</label>
           <textarea
-            className="w-full border p-2 rounded h-32"
+            className="w-full border p-2 md:p-3 rounded h-32 md:h-40"
             value={steps}
             onChange={(e) => setSteps(e.target.value)}
           />
@@ -93,10 +91,10 @@ const AddRecipeForm = () => {
           )}
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white py-2 md:py-3 rounded hover:bg-blue-700 transition"
         >
           Submit Recipe
         </button>
