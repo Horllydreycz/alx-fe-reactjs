@@ -4,6 +4,25 @@ function RegistrationForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = () => {
+    const newErrors = {};
+
+    if (!username) {
+      newErrors.username = "Username is required";
+    }
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+  };
 
   return (
     <form>
@@ -33,6 +52,10 @@ function RegistrationForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
+
+      <button type="button" onClick={handleSubmit}>
+        Submit
+      </button>
     </form>
   );
 }
