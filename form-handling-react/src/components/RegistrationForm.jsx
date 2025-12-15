@@ -1,55 +1,38 @@
-import React from "react";
 import { useState } from "react";
-import FormikForm from "./formikForm";
 
 function RegistrationForm() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
-  function handleSubmit(e) {
-    e.preventDefault();
-    const { username, email, password } = formData;
-    if (!username || !email || !password) {
-      setError("All fields are required!");
-      return;
-    }
-    setError("");
-    console.log("Form submitted:", formData);
-    alert("Registration successful!");
-  }
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <label>
-        Username
-        <input type="text" value={formData.username} onChange={handleChange} />
-      </label>
-      <br />
-      <label>
-        Email
-        <input type="email" value={formData.email} onChange={handleChange} />
-      </label>
-      <br />
-      <label>
-        Password
+        Enter your username:
         <input
-          type="password"
-          value={formData.password}
-          onChange={handleChange}
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </label>
-      <br />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit">Login</button>
+
+      <label>
+        Enter your email:
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </label>
+
+      <label>
+        Enter your password:
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </label>
     </form>
   );
 }
