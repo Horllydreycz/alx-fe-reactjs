@@ -34,6 +34,7 @@ function RegistrationForm() {
           onChange={(e) => setUsername(e.target.value)}
         />
       </label>
+      <br />
 
       <label>
         Enter your email:
@@ -43,6 +44,7 @@ function RegistrationForm() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </label>
+      <br />
 
       <label>
         Enter your password:
@@ -52,6 +54,7 @@ function RegistrationForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
+      <br />
 
       <button type="button" onClick={handleSubmit}>
         Submit
