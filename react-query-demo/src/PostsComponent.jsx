@@ -1,12 +1,5 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  RefreshCw,
-  Loader2,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-} from "lucide-react";
 
 // Fetch posts from JSONPlaceholder API
 const fetchPosts = async () => {
@@ -39,9 +32,9 @@ function PostsComponent() {
   // Loading State
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
-        <p className="text-gray-600 text-lg">Loading posts...</p>
+      <div style={{ textAlign: "center", padding: "48px 0" }}>
+        <div style={{ marginBottom: "16px" }}>⏳</div>
+        <p style={{ color: "#666", fontSize: "18px" }}>Loading posts...</p>
       </div>
     );
   }
@@ -49,15 +42,30 @@ function PostsComponent() {
   // Error State
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
-        <p className="text-red-600 text-lg font-semibold mb-2">
+      <div style={{ textAlign: "center", padding: "48px 0" }}>
+        <div style={{ marginBottom: "16px" }}>❌</div>
+        <p
+          style={{
+            color: "#dc2626",
+            fontSize: "18px",
+            fontWeight: "600",
+            marginBottom: "8px",
+          }}
+        >
           Error Loading Posts
         </p>
-        <p className="text-gray-600 mb-4">{error.message}</p>
+        <p style={{ color: "#666", marginBottom: "16px" }}>{error.message}</p>
         <button
           onClick={() => refetch()}
-          className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+          style={{
+            padding: "8px 24px",
+            backgroundColor: "#dc2626",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
         >
           Try Again
         </button>
@@ -67,20 +75,58 @@ function PostsComponent() {
 
   // Success State - Display Posts
   return (
-    <div className="space-y-6">
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
       {/* Header with cache status and refetch button */}
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
+      <div
+        style={{
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          padding: "24px",
+          marginBottom: "24px",
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                color: "#1f2937",
+                marginBottom: "8px",
+              }}
+            >
               Posts from API
             </h2>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Clock className="w-4 h-4" />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "14px",
+                color: "#6b7280",
+              }}
+            >
+              <span>🕐</span>
               <span>Last updated: {lastUpdated}</span>
               {isFetching && (
-                <span className="flex items-center gap-1 text-blue-600">
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                <span
+                  style={{
+                    color: "#3b82f6",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <span>🔄</span>
                   Updating...
                 </span>
               )}
@@ -89,21 +135,40 @@ function PostsComponent() {
           <button
             onClick={() => refetch()}
             disabled={isFetching}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 16px",
+              backgroundColor: isFetching ? "#93c5fd" : "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: isFetching ? "not-allowed" : "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
           >
-            <RefreshCw
-              className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
-            />
+            <span>🔄</span>
             Refetch Data
           </button>
         </div>
 
         {/* Cache Info */}
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-            <div className="text-sm text-green-800">
-              <p className="font-semibold mb-1">React Query Caching Active</p>
+        <div
+          style={{
+            backgroundColor: "#f0fdf4",
+            border: "1px solid #86efac",
+            borderRadius: "8px",
+            padding: "16px",
+          }}
+        >
+          <div style={{ display: "flex", gap: "8px" }}>
+            <span>✅</span>
+            <div style={{ fontSize: "14px", color: "#166534" }}>
+              <p style={{ fontWeight: "600", marginBottom: "4px" }}>
+                React Query Caching Active
+              </p>
               <p>
                 Data is cached and will be served instantly on revisit. Navigate
                 away and come back to see caching in action!
@@ -114,28 +179,84 @@ function PostsComponent() {
       </div>
 
       {/* Posts Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+          gap: "16px",
+          marginBottom: "24px",
+        }}
+      >
         {data.slice(0, 12).map((post) => (
           <div
             key={post.id}
-            className="bg-white rounded-lg shadow-md p-5 border border-gray-200 hover:shadow-lg transition-shadow"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "8px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              padding: "20px",
+              border: "1px solid #e5e7eb",
+              transition: "box-shadow 0.2s",
+            }}
           >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "12px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  color: "#2563eb",
+                  backgroundColor: "#dbeafe",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                }}
+              >
                 Post #{post.id}
               </span>
-              <span className="text-xs text-gray-500">User {post.userId}</span>
+              <span style={{ fontSize: "12px", color: "#6b7280" }}>
+                User {post.userId}
+              </span>
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "600",
+                color: "#1f2937",
+                marginBottom: "8px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
               {post.title}
             </h3>
-            <p className="text-gray-600 text-sm line-clamp-3">{post.body}</p>
+            <p
+              style={{
+                color: "#6b7280",
+                fontSize: "14px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {post.body}
+            </p>
           </div>
         ))}
       </div>
 
       {/* Total count */}
-      <div className="text-center text-gray-600 text-sm">
+      <div style={{ textAlign: "center", color: "#6b7280", fontSize: "14px" }}>
         Showing 12 of {data.length} total posts
       </div>
     </div>
