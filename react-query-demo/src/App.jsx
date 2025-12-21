@@ -6,6 +6,8 @@ import {
 
 import CreatePostForm from "./CreatePostForm";
 
+import PostsComponent from "./PostsComponent";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,6 +22,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <CreatePostForm />
+      <PostsComponent />
     </QueryClientProvider>
   );
 }
