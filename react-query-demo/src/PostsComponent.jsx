@@ -10,7 +10,15 @@ const fetchPosts = async () => {
 };
 
 function PostsComponent() {
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+    dataUpdatedAt,
+  } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
@@ -25,16 +33,32 @@ function PostsComponent() {
 
   return (
     <div>
-      <h2>Posts</h2>
-      <button onClick={() => refetch()}>Refetch Data</button>
+      <h2>Posts from API</h2>
+      <p>
+        Last updated:{" "}
+        {dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString() : "Never"}
+      </p>
+      <button onClick={() => refetch()} disabled={isFetching}>
+        {isFetching ? "Refetching..." : "Refetch Data"}
+      </button>
       <div>
-        {data.map((post) => (
-          <div key={post.id}>
-            <h3>{post.title}</h3>
+        {data.slice(0, 12).map((post) => (
+          <div
+            key={post.id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              margin: "10px 0",
+            }}
+          >
+            <h3>
+              Post #{post.id} - {post.title}
+            </h3>
             <p>{post.body}</p>
           </div>
         ))}
       </div>
+      <p>Showing 12 of {data.length} total posts</p>
     </div>
   );
 }
